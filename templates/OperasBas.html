@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+
+
+{% block container %}
+<h1>Calcular</h1>
+<div class="contenedor" style="display: flex;">
+<div class="form-container" style="margin-right: 25em;">
+<form action="/OperasBas" method="post">
+    <label>N1:</label>
+    <input type="number" name="n1"><br>
+    <label>N2:</label>
+    <input type="number" name="n2"><br>
+    <input type="submit" value="Calcular" class="btn btn-primary">
+</form>
+</div>
+<div class="result-container">
+    <h1>{{res}}</h1>
+</div>
+</div>
+
+
+{%endblock%}
