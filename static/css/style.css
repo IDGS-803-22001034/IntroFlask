@@ -1,0 +1,29 @@
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 50vh;
+}
+.form-container, .salidas_container {
+    margin: 1em;
+    border: 2px solid white;
+    padding: 3em;
+}
+.result-container {
+    position: absolute;
+    bottom: 1em;
+    left: 25%;
+    border: 2px solid white;
+    padding: 3em;
+    align-self: center;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.result-container h1:first-child {
+    text-align: left;
+}

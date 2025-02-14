@@ -1,6 +1,8 @@
 from flask import Flask, render_template,request #manipula los datos
 
+
 app=Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -25,6 +27,30 @@ def resultado():
         num1=request.form.get("n1")
         num2=request.form.get("n2")
         return "La suma de {} y {} es {}".format(num1,num2,int(num1)+int(num2))
+
+
+@app.route('/cinepolis',methods=["GET","POST"])
+def cinepolis():
+    res=""
+    resultado=0
+    if request.method == "POST":
+        com=int(request.form.get("compradores"))
+        bol=int(request.form.get("boletos"))
+        cineco=request.form.get("radio")
+        num=7
+        precio=12
+        total=bol*precio
+        if bol>(com*num):
+            res="El número de boletos es mayor al permitido por persona"
+            return render_template("cinepolis.html", res=res, resultado=0)
+        if bol>5:
+            total*=0.85
+        if bol>2 and bol<=5:
+            total*=0.90
+        if  cineco=="si":
+            total*=0.90
+        resultado=total
+    return render_template("cinepolis.html", res=res, resultado=resultado)
 
 @app.route('/ejemplo1')
 def ejemplo1():
