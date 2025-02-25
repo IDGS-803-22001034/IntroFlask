@@ -1,14 +1,55 @@
 from flask import Flask, render_template,request #manipula los datos
-
+from flask import g
+from flask_wtf.csrf import CSRFProtect # Ayuda ante ataques CSRF
+from flask import flash
+import forms
 
 app=Flask(__name__)
+app.secret_key="Esta es la clave secreta"
+csrf = CSRFProtect()
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'),404
+
+# imprime una solictud antes de cualquier otra.
+@app.before_request
+def before_request():
+    g.nombre="Mario"
+    print(' Before request 1')
+
+ #imprime una solictud despues de cualquier otra.
+@app.after_request
+def after_request(response):
+    print(' After request 3')
+    return response
 
 
 @app.route('/')
 def index():
     grupo="IDGS803"
     lista=["Juan","Pedro","Mario"]
+    print("Index 2")
+    print("Hola {}".format(g.nombre))
     return render_template("index.html", grupo=grupo,lista=lista)
+
+@app.route('/Alumnos', methods=["GET","POST"])
+def alumnos():
+    mat=''
+    nom=''
+    edad=''
+    correo=''
+    ape=''
+    alumno_clase=forms.UserForm(request.form) #instancia de la clase de forms.py
+    if request.method=='POST' and alumno_clase.validate():
+        mat=alumno_clase.matricula.data
+        nom=alumno_clase.nombre.data
+        ape=alumno_clase.apellidos.data
+        edad=alumno_clase.edad.data
+        correo=alumno_clase.email.data
+        mensaje='Bienvenido {}'.format(nom)
+        flash(mensaje)
+    return render_template("Alumnos.html",form=alumno_clase,mat=mat,nom=nom,ape=ape,edad=edad,correo=correo)
 
 @app.route('/OperasBas',methods=["GET","POST"])
 def operas():
@@ -95,4 +136,5 @@ def form1():
         '''
 
 if __name__ == '__main__':
+    csrf.init_app(app) # Esto principalmente sirve para que pase los parametros que definimos en la clave secrete
     app.run(debug=True, port=3000)
